@@ -20,12 +20,13 @@ public class Persona {
 	@Column
 	private Integer edad;
 
+	
+//	Getters and Setters
+	
 	public Integer getId() {
 		return id;
 	}
 
-	
-//	Getters and Setters
 	public void setId(Integer id) {
 		this.id = id;
 	}
