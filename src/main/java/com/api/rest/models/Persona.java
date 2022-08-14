@@ -24,6 +24,8 @@ public class Persona {
 		return id;
 	}
 
+	
+//	Getters and Setters
 	public void setId(Integer id) {
 		this.id = id;
 	}
