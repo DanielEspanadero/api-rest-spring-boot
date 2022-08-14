@@ -87,3 +87,77 @@ public class Persona {
 }
 ```
 
+## CREACIÓN DE LA INTERFAZ PERSONADAO
+
+Una interfaz (interface) es sintácticamente similar a una clase abstracta, en la que puede especificar uno o más métodos que no tienen cuerpo ({}). Esos métodos deben ser implementados por una clase para que se definan sus acciones.
+
+Por lo tanto, una interfaz especifica qué se debe hacer, pero no cómo hacerlo. Una vez que se define una interfaz, cualquier cantidad de clases puede implementarla. Además, una clase puede implementar cualquier cantidad de interfaces.
+
+Para implementar una interfaz, una clase debe proporcionar cuerpos (implementaciones) para los métodos descritos por la interfaz. Cada clase es libre de determinar los detalles de su propia implementación. Dos clases pueden implementar la misma interfaz de diferentes maneras, pero cada clase aún admite el mismo conjunto de métodos. Por lo tanto, el código que tiene conocimiento de la interfaz puede usar objetos de cualquier clase, ya que la interfaz con esos objetos es la misma.
+
+_La carpeta DAO es el equivalente a CONTROLLERS donde se almacena la lógica de la aplicación._
+```
+package com.api.rest.dao;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.api.rest.models.Persona;
+
+public interface PersonaDAO extends JpaRepository<Persona, Integer> {
+
+}
+```
+
+## CONFIGURACIÓN DE LA CLASE PERSONAREST
+
+En el package de REST van todas las peticiones al servidor, en este caso hemos creado un CRUD para la tabla personas:
+
+```
+package com.api.rest.rest;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.api.rest.dao.PersonaDAO;
+import com.api.rest.models.Persona;
+
+@RestController
+@RequestMapping("personas")
+public class PersonaRest {
+
+	@Autowired
+	private PersonaDAO personaDAO;
+	
+//	Metodos HTTP - Peticiones al servidor
+	
+	@PostMapping("/guardar")
+	public void guardar(@RequestBody Persona persona) {
+		personaDAO.save(persona);
+	}
+	
+	@GetMapping("/listar")
+	public List<Persona> listar() {
+		return personaDAO.findAll();
+	}
+	
+	@DeleteMapping("/eliminar/{id}")
+	public void eliminar(@PathVariable("id") Integer id) {
+		personaDAO.deleteById(id);
+	}
+	
+	@PutMapping("actualizar")
+	public void actualizar(@RequestBody Persona persona) {
+		personaDAO.save(persona);
+	}
+	
+}
+```
